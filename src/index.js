@@ -1,17 +1,41 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, {lazy, Suspense } from 'react';
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Route, Navigate, Routes } from "react-router-dom";
+import { QueryClientProvider, QueryClient } from "react-query";
+import { ReactQueryDevtools } from 'react-query/devtools';
+import Header from './components/siteHeader';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+// Lazy load for page components
+const HomePage = lazy(() => import("./pages/homePage"));
+const Inventory = lazy(() => import("./pages/inventoryPage"));
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 360000,
+      refetchInterval: 360000, 
+      refetchOnWindowFocus: false
+    },
+  },
+});
+
+const App = () => {
+  return (
+  <Suspense fallback={<div>Loading...</div>}>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+        <Route path="inventoryPage" element={<Inventory />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="*" element={ <Navigate to="/" /> } />
+        </Routes>
+      </BrowserRouter>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  </Suspense>
+  );
+};
+
+const rootElement = createRoot( document.getElementById("root") )
+rootElement.render(<App />);
