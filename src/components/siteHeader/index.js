@@ -12,6 +12,9 @@ const Header = () => {
         <Button component={Link} to="/inventoryPage" color="inherit">
           Inventory
         </Button>
+        <Button component={Link} to="/addProductPage" color="inherit">
+          Add Product
+        </Button>
       </Toolbar>
     </AppBar>
   );

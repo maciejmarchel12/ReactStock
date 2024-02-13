@@ -1,15 +1,13 @@
 import React from 'react';
-import TemplatePageList from '../components/templatePageList';
+import InventoryCard from '../components/inventoryCard';
 
-const inventoryItems = [
-  { name: 'Item 1', quantity: 10 },
-  { name: 'Item 2', quantity: 5 },
-  // Add more items to test
-];
-
-const InventoryPage = () => {
+const InventoryPage = ({ inventory }) => {
   return (
-    <TemplatePageList title="Inventory" items={inventoryItems} />
+    <div>
+      {inventory && inventory.map((product, index) => (
+        <InventoryCard key={index} {...product} />
+      ))}
+    </div>
   );
 };
 
