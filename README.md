@@ -2,6 +2,6 @@
 
 ### Features
 
--Adding Inventory
--Viewing added Inventory
--Backend App to connect Database
+- Adding Inventory
+- Viewing added Inventory
+- Backend App to connect Database
