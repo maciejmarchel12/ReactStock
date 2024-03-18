@@ -1,0 +1,33 @@
+import dotenv from 'dotenv';
+dotenv.config();
+import mongoose from 'mongoose';
+import users from './users';
+import User from '../api/users/userModel';
+
+async function main() {
+    try {
+        if (process.env.NODE_ENV !== 'development') {
+            throw new Error('This script is only for the development environment.');
+        }
+        
+        // Connect to MongoDB
+        await mongoose.connect(process.env.MONGO_DB);
+        console.log('Connected to MongoDB');
+        
+        // Drop users collection if it exists
+        await User.collection.drop().catch(err => console.log('User collection not found:', err));
+        
+        // Create users
+        await User.create(users);
+        console.log('Database initialized');
+        console.log(`${users.length} users loaded`);
+        
+        // Disconnect from MongoDB
+        await mongoose.disconnect();
+        console.log('Disconnected from MongoDB');
+    } catch (error) {
+        console.error('Error initializing database:', error);
+    }
+}
+
+main();
