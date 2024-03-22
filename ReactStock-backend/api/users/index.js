@@ -25,7 +25,8 @@ router.post('/', asyncHandler(async (req, res) => {
         }
 
         // Validate permission level
-        if (!['employee', 'manager', 'admin'].includes(req.body.permissionLevel)) {
+        const permissionLevels = ['employee', 'manager', 'admin']; // Adjusted casing
+        if (!permissionLevels.includes(req.body.permissionLevel)) {
             return res.status(400).json({ success: false, msg: 'Invalid permission level.' });
         }
 

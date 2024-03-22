@@ -23,7 +23,7 @@ export const login = async (username, password) => {
 
 export const signup = async (username, password, permissionLevel) => {
     try {
-        const response = await fetch('http://localhost:8080/api/users/signup', {
+        const response = await fetch('http://localhost:8080/api/users?action=register', {
             headers: {
                 'Content-Type': 'application/json'
             },

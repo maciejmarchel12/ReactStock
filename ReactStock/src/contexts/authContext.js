@@ -31,16 +31,31 @@ const AuthContextProvider = (props) => {
         throw error;
       }
     };
-  
-    const register = async (username, password) => {
+
+    const register = async (username, password, permissionLevel) => {
       try {
-        const success = await signup(username, password);
-        return success;
+        const success = await signup(username, password, permissionLevel);
+        if (success) {
+          setToken(success.token); // Assuming `signup` returns an object with a `token` property upon success
+          setIsAuthenticated(true);
+        }
+        return success; // Return the success response from the backend
       } catch (error) {
         console.error("Registration error:", error);
         throw error;
       }
     };
+
+// OLD  
+//    const register = async (username, password) => {
+//      try {
+//        const success = await signup(username, password);
+//        return success;
+//      } catch (error) {
+//        console.error("Registration error:", error);
+//        throw error;
+//      }
+//    };
   
     const signout = () => {
       localStorage.removeItem("token");

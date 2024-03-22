@@ -3,6 +3,8 @@ import { Navigate, Link } from "react-router-dom";
 import { AuthContext } from '../contexts/authContext';
 import { Container, Typography, TextField, Button, Box, Snackbar, MenuItem } from "@mui/material";
 
+console.log('Rendering SignUp');
+
 const SignUpPage = () => {
     const context = useContext(AuthContext);
     const [userName, setUserName] = useState("");
@@ -44,7 +46,7 @@ const SignUpPage = () => {
     };
 
     if (registered === true) {
-        return <Navigate to="/login" />;
+        return <Navigate to="/LoginPage" />;
     }
 
     // Return SignUp Form

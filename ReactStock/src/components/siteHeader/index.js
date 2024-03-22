@@ -15,10 +15,10 @@ const Header = () => {
         <Button component={Link} to="/addProductPage" color="inherit">
           Add Product
         </Button>
-        <Button component={Link} to="/login" color="inherit">
+        <Button component={Link} to="/LoginPage" color="inherit">
           Login
         </Button>
-        <Button component={Link} to="/SignUpPage" color="inherit">
+        <Button component={Link} to="/signUpPage" color="inherit">
           Sign Up
         </Button>
         <Button component={Link} to="/UserPage" color="inherit">
