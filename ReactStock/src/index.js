@@ -63,22 +63,23 @@ const App = () => {
             <AuthContextProvider>
               <Routes>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<LoginPage />} />
+                <Route path="/LoginPage" element={<LoginPage />} />
+                <Route path="/SignUpPage" element={<SignUpPage />} />
                 <Route
                   path="/"
                   element={<ProtectedRoutes isAuthenticated={isAuthenticated} permissionLevel={permissionLevel} />}
                 >
-                  <Route path="/userPage" element={<UserPage />} />
-                  <Route
-                    path="/signUpPage"
+                  <Route path="/UserPage" element={<UserPage />} />
+                  {/* <Route
+                    path="/SignUpPage"
                     element={
                       isAuthenticated && (permissionLevel === 'admin' || permissionLevel === 'manager') ? (
                         <SignUpPage />
                       ) : (
-                        <Navigate to="/" />
+                        <Navigate to="/SignUpPage" replace />
                       )
                     }
-                  />
+                  /> */}
                   <Route path="/addProductPage" element={<AddProduct onAddProduct={handleAddProduct} />} />
                   <Route path="/inventoryPage" element={<Inventory inventory={inventory} />} />
                 </Route>
