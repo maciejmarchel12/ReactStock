@@ -65,8 +65,8 @@ router.post('/login', asyncHandler(async (req, res) => {
         const isMatch = await user.comparePassword(password);
         if (isMatch) {
             // Generate JWT token
-            const token = jwt.sign({ username: user.username }, process.env.SECRET);
-            res.status(200).json({ success: true, token: 'BEARER ' + token });
+            const token = jwt.sign({ username: user.username, permissionLevel: user.permissionLevel }, process.env.SECRET);
+            res.status(200).json({ success: true, token: 'BEARER ' + token, permissionLevel: user.permissionLevel });
         } else {
             res.status(401).json({ success: false, msg: 'Wrong password.' });
         }
