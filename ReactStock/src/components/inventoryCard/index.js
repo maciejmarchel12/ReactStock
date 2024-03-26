@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
 import { styled } from '@mui/system';
+import { AuthContext } from '../../contexts/authContext';
+import { useNavigate } from 'react-router-dom';
 
 const StyledCard = styled(Card)({
     width: 200,
-    height: 300,
+    height: 500,
     marginBottom: 16, // You can adjust the spacing between cards here
   });
   
@@ -17,7 +20,22 @@ const StyledCard = styled(Card)({
     objectFit: 'contain',
   });
   
-  const InventoryCard = ({ productName, image, productType, barcode, amountAvailable, storeLocation }) => {
+  const InventoryCard = ({ id, productName, image, productType, barcode, amountAvailable, storeLocation, onEdit, onDelete }) => {
+    const history = useNavigate();
+
+    const { isAuthenticated, permissionLevel } = useContext(AuthContext)
+
+    console.log('isAuthenticated:', isAuthenticated);
+    console.log('permissionLevel:', permissionLevel);
+
+    const handleEdit = () => {
+      onEdit({ id, productName, image, productType, barcode, amountAvailable, storeLocation });
+    };
+
+    const handleDelete = () => {
+      onDelete(id);
+    }
+
     return (
       <StyledCard>
         <StyledCardMedia
@@ -41,6 +59,12 @@ const StyledCard = styled(Card)({
           <Typography variant="body2" color="text.secondary">
             Store Location: {storeLocation}
           </Typography>
+          <Button variant="contained" color="primary" onClick={handleEdit}>Edit</Button>
+          {isAuthenticated && (permissionLevel === 'admin' || permissionLevel === 'manager') && (
+            <>
+              <Button variant="contained" color="secondary" onClick={handleDelete}>Delete</Button>
+            </>
+          )}
         </CardContent>
       </StyledCard>
     );

@@ -5,10 +5,16 @@ import InventoryPage from '../../pages/inventoryPage';
 
 const ProductManager = () => {
   const [inventory, setInventory] = useState([]);
+  const [lastUsedId, setLastUsedId] = useState(0); // Initialize last used ID
 
   const handleAddProduct = (newProduct) => {
-    // Update the inventory state with the new product
+    // Increments last used ID by 1 for the new product
+    const newId = lastUsedId + 1;
+    newProduct.id = newId;
+    // Updates the inventory state with the new product
     setInventory((prevInventory) => [...prevInventory, newProduct]);
+    // Updates the last used ID
+    setLastUsedId(newId);
   };
 
   return (

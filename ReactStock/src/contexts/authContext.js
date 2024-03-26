@@ -6,6 +6,7 @@ export const AuthContext = createContext(null);
 const AuthContextProvider = (props) => {
     const existingToken = localStorage.getItem("token");
     const [isAuthenticated, setIsAuthenticated] = useState(!!existingToken);
+    const [permissionLevel, setPermissionLevel] = useState("");
     // Remove the unused variables authToken and userName
   
     // Function to put JWT token in local storage.
@@ -14,13 +15,14 @@ const AuthContextProvider = (props) => {
       // Remove the unused authToken
     };
   
-    const authenticate = async (username, password) => {
+    const authenticate = async (username, password, permissionLevel) => {
       try {
-        const result = await login(username, password);
+        const result = await login(username, password, permissionLevel);
   
         if (result.token) {
           setToken(result.token);
           setIsAuthenticated(true);
+          setPermissionLevel(result.permissionLevel);
           // Remove the unused userName
         } else {
           // If the result doesn't contain a token, throw an error
@@ -38,6 +40,7 @@ const AuthContextProvider = (props) => {
         if (success) {
           setToken(success.token); // Assuming `signup` returns an object with a `token` property upon success
           setIsAuthenticated(true);
+          setPermissionLevel(permissionLevel); // Set permission level
         }
         return success; // Return the success response from the backend
       } catch (error) {
@@ -45,17 +48,6 @@ const AuthContextProvider = (props) => {
         throw error;
       }
     };
-
-// OLD  
-//    const register = async (username, password) => {
-//      try {
-//        const success = await signup(username, password);
-//        return success;
-//      } catch (error) {
-//        console.error("Registration error:", error);
-//        throw error;
-//      }
-//    };
   
     const signout = () => {
       localStorage.removeItem("token");
@@ -66,6 +58,7 @@ const AuthContextProvider = (props) => {
       <AuthContext.Provider
         value={{
           isAuthenticated,
+          permissionLevel,
           authenticate,
           register,
           signout,
