@@ -24,6 +24,7 @@ const ProductForm = ({ initialValues, onSubmit }) => {
       <form onSubmit={handleSubmit}>
         <Box mb={2}>
           <TextField
+            id="productName" // Add id attribute
             label="Product Name"
             name="productName"
             value={formData.productName}
@@ -33,6 +34,7 @@ const ProductForm = ({ initialValues, onSubmit }) => {
         </Box>
         <Box mb={2}>
           <TextField
+            id="image" // Add id attribute
             label="Image URL"
             name="image"
             value={formData.image}

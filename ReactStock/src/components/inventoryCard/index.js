@@ -21,7 +21,7 @@ const StyledCard = styled(Card)({
   });
   
   const InventoryCard = ({ id, productName, image, productType, barcode, amountAvailable, storeLocation, onEdit, onDelete }) => {
-    const history = useNavigate();
+    // const history = useNavigate();
 
     const { isAuthenticated, permissionLevel } = useContext(AuthContext)
 

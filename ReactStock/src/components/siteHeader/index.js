@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { AppBar, Toolbar, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../contexts/authContext';
 
 const Header = () => {
+  const { isAuthenticated, permissionLevel, signout } = useContext(AuthContext);
+
   return (
     <AppBar position="static">
       <Toolbar>
@@ -15,15 +18,27 @@ const Header = () => {
         <Button component={Link} to="/addProductPage" color="inherit">
           Add Product
         </Button>
-        <Button component={Link} to="/LoginPage" color="inherit">
-          Login
-        </Button>
-        <Button component={Link} to="/signUpPage" color="inherit">
-          Sign Up
-        </Button>
+
+        {isAuthenticated && (permissionLevel === 'manager' || permissionLevel === 'admin') && (
+          <Button component={Link} to="/signUpPage" color="inherit">
+            Sign Up
+          </Button>
+        )}
+
         <Button component={Link} to="/UserPage" color="inherit">
           User Page
         </Button>
+        {isAuthenticated  ? (
+          <Button onClick={signout} color='inherit' style={{ marginLeft: 'auto'}}>
+            Logout
+          </Button>
+        ) : (
+          <>
+        <Button component={Link} to="/LoginPage" color="inherit">
+          Login
+        </Button>
+        </>
+        )}
       </Toolbar>
     </AppBar>
   );
