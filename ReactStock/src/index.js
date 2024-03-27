@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Navigate, Routes } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools';
 import Header from './components/siteHeader';
+import Footer from './components/siteFooter';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 // import ProductManager from './components/productManager';
 import AuthContextProvider, { AuthContext } from "./contexts/authContext";
@@ -59,32 +60,23 @@ const App = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
-            <Header />
             <AuthContextProvider>
+            <Header />
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/LoginPage" element={<LoginPage />} />
                 <Route path="/SignUpPage" element={<SignUpPage />} />
                 <Route
                   path="/"
-                  element={<ProtectedRoutes isAuthenticated={isAuthenticated} permissionLevel={permissionLevel} />}
+                  element={<ProtectedRoutes />}
                 >
                   <Route path="/UserPage" element={<UserPage />} />
-                  {/* <Route
-                    path="/SignUpPage"
-                    element={
-                      isAuthenticated && (permissionLevel === 'admin' || permissionLevel === 'manager') ? (
-                        <SignUpPage />
-                      ) : (
-                        <Navigate to="/SignUpPage" replace />
-                      )
-                    }
-                  /> */}
                   <Route path="/addProductPage" element={<AddProduct onAddProduct={handleAddProduct} />} />
                   <Route path="/inventoryPage" element={<Inventory inventory={inventory} />} />
                 </Route>
               </Routes>
             </AuthContextProvider>
+            <Footer />
           </BrowserRouter>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>

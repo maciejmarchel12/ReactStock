@@ -19,8 +19,7 @@ const InventoryPage = ({ inventory }) => {
 
   const handleSubmitForm = (formData) => {
     if (editItem) {
-      // Update existing item in the inventoryList
-      const updatedList = inventoryList.map(item => {
+      const updatedList = inventoryList.map((item) => {
         if (item.id === editItem.id) {
           return { ...item, ...formData };
         }
@@ -29,11 +28,9 @@ const InventoryPage = ({ inventory }) => {
       setInventoryList(updatedList);
       setEditItem(null);
     } else {
-      // If there is no editItem, it means a new item is being added
-      // Generate unique ID for new item
       const id = Math.random().toString(36).substring(7);
       const newItem = { id, ...formData };
-      setInventoryList(prevInventory => [...prevInventory, newItem]); // Add new item to inventoryList
+      setInventoryList((prevInventory) => [...prevInventory, newItem]);
     }
   };
 
@@ -44,7 +41,7 @@ const InventoryPage = ({ inventory }) => {
       ) : (
         inventoryList.map((product) => (
           <InventoryCard
-            key={product.id}
+            key={product.id} // Ensure each InventoryCard has a unique key
             {...product}
             onEdit={handleEdit}
             onDelete={handleDelete}
