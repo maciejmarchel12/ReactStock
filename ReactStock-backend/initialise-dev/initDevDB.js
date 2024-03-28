@@ -3,6 +3,8 @@ dotenv.config();
 import mongoose from 'mongoose';
 import users from './users';
 import User from '../api/users/userModel';
+import products from './products';
+import Product from '../api/products/productModel';
 
 async function main() {
     try {
@@ -21,6 +23,11 @@ async function main() {
         await User.create(users);
         console.log('Database initialized');
         console.log(`${users.length} users loaded`);
+
+        // Create Products
+        await Product.create(products);
+        console.log('Database initialized');
+        console.log(`${products.length} products loaded`)
         
         // Disconnect from MongoDB
         await mongoose.disconnect();

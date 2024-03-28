@@ -1,22 +1,29 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { createProduct, updateProductById } from '../../api/reactStock-backend';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
 const ProductForm = ({ initialValues, onSubmit }) => {
   const [formData, setFormData] = useState(initialValues);
-  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    onSubmit(formData);
-    navigate('/inventoryPage');
+    try {
+      if (initialValues._id) {
+        await updateProductById(initialValues._id, formData);
+      } else {
+        await createProduct(formData);
+      }
+      onSubmit(); // Notify parent component about successful submission
+    } catch (error) {
+      console.error('Error submitting product form:', error);
+    }
   };
 
   return (
@@ -24,7 +31,6 @@ const ProductForm = ({ initialValues, onSubmit }) => {
       <form onSubmit={handleSubmit}>
         <Box mb={2}>
           <TextField
-            id="productName" // Add id attribute
             label="Product Name"
             name="productName"
             value={formData.productName}
@@ -34,7 +40,6 @@ const ProductForm = ({ initialValues, onSubmit }) => {
         </Box>
         <Box mb={2}>
           <TextField
-            id="image" // Add id attribute
             label="Image URL"
             name="image"
             value={formData.image}
