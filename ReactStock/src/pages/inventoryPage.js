@@ -1,47 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import InventoryCard from '../components/inventoryCard';
 import ProductForm from '../components/productForm';
+import { getAllProducts, deleteProductById } from '../api/reactStock-backend';
 //import { AuthContext } from '../contexts/authContext';
 
-const InventoryPage = ({ inventory }) => {
-  const [inventoryList, setInventoryList] = useState(inventory);
+const InventoryPage = () => {
+  const [inventory, setInventory] = useState([]);
   const [editItem, setEditItem] = useState(null);
+
+  useEffect(() => {
+    fetchInventory();
+  }, []); // Fetch inventory on component mount
+
+  const fetchInventory = async () => {
+    try {
+      const products = await getAllProducts();
+      setInventory(products);
+    } catch (error) {
+      console.error('Error fetching inventory:', error);
+    }
+  };
 
   const handleEdit = (item) => {
     setEditItem(item);
   };
 
-  const handleDelete = (id) => {
-    setInventoryList(prevInventory =>
-      prevInventory.filter(item => item.id !== id)
-    );
-  };
-
-  const handleSubmitForm = (formData) => {
-    if (editItem) {
-      const updatedList = inventoryList.map((item) => {
-        if (item.id === editItem.id) {
-          return { ...item, ...formData };
-        }
-        return item;
-      });
-      setInventoryList(updatedList);
-      setEditItem(null);
-    } else {
-      const id = Math.random().toString(36).substring(7);
-      const newItem = { id, ...formData };
-      setInventoryList((prevInventory) => [...prevInventory, newItem]);
+  const handleDelete = async (id) => {
+    try {
+      await deleteProductById(id);
+      setInventory((prevInventory) => prevInventory.filter(item => item.id !== id));
+      await fetchInventory();
+    } catch (error) {
+      console.error('Error deleting product:', error);
     }
   };
+
+  const handleSubmitForm = async () => {
+    try {
+        // Reload inventory after form submission
+        await fetchInventory();
+        setEditItem(null);
+    } catch (error) {
+        console.error('Error handling form submission:', error);
+    }
+};
 
   return (
     <div>
       {editItem ? (
         <ProductForm initialValues={editItem} onSubmit={handleSubmitForm} />
       ) : (
-        inventoryList.map((product) => (
+        inventory.map((product) => (
           <InventoryCard
-            key={product.id} // Ensure each InventoryCard has a unique key
+            key={product._id} // Ensure each InventoryCard has a unique key
             {...product}
             onEdit={handleEdit}
             onDelete={handleDelete}

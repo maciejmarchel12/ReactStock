@@ -6,7 +6,6 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/system';
 import { AuthContext } from '../../contexts/authContext';
-import { useNavigate } from 'react-router-dom';
 
 const StyledCard = styled(Card)({
     width: 200,
@@ -20,7 +19,7 @@ const StyledCard = styled(Card)({
     objectFit: 'contain',
   });
   
-  const InventoryCard = ({ id, productName, image, productType, barcode, amountAvailable, storeLocation, onEdit, onDelete }) => {
+  const InventoryCard = ({ _id, productName, image, productType, barcode, amountAvailable, storeLocation, onEdit, onDelete }) => {
     // const history = useNavigate();
 
     const { isAuthenticated, permissionLevel } = useContext(AuthContext)
@@ -29,11 +28,11 @@ const StyledCard = styled(Card)({
     console.log('permissionLevel:', permissionLevel);
 
     const handleEdit = () => {
-      onEdit({ id, productName, image, productType, barcode, amountAvailable, storeLocation });
+      onEdit({ _id, productName, image, productType, barcode, amountAvailable, storeLocation });
     };
 
     const handleDelete = () => {
-      onDelete(id);
+      onDelete(_id);
     }
 
     return (
