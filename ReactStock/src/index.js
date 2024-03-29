@@ -1,14 +1,14 @@
 import React, {lazy, Suspense, useState, useContext } from 'react';
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Navigate, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools';
-import Header from './components/siteHeader';
 import Footer from './components/siteFooter';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 // import ProductManager from './components/productManager';
 import AuthContextProvider, { AuthContext } from "./contexts/authContext";
 import ProtectedRoutes from "./protectedRoutes";
+import Header from './components/siteHeader/index.js';
 
 // Lazy load for page components
 const HomePage = lazy(() => import('./pages/homePage'));
@@ -18,6 +18,7 @@ const AddProduct = lazy(() => import('./pages/addProductPage'));
 const LoginPage = lazy(() => import('./pages/loginPage'));
 const UserPage = lazy(() => import('./pages/userPage'));
 const SignUpPage = lazy(() => import('./pages/signUpPage'));
+const UserEditPage = lazy(() => import('./pages/editUserPage.js'))
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -73,6 +74,7 @@ const App = () => {
                   <Route path="/UserPage" element={<UserPage />} />
                   <Route path="/addProductPage" element={<AddProduct onAddProduct={handleAddProduct} />} />
                   <Route path="/inventoryPage" element={<Inventory inventory={inventory} />} />
+                  <Route path="/edit-user/:userId" element={<UserEditPage />} />
                 </Route>
               </Routes>
             </AuthContextProvider>

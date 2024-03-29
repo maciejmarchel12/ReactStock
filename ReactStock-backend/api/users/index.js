@@ -2,6 +2,7 @@ import express from 'express';
 import User from './userModel';
 import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
@@ -15,6 +16,21 @@ const isPasswordValid = (password) => {
 router.get('/', async (req, res) =>{
     const users = await User.find();
     res.status(200).json(users);
+});
+
+// Get a user by ID
+router.get('/:id', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ success: false, msg: 'User not found.' });
+        }
+    } catch (error) {
+        console.error('Error getting user by ID:', error);
+        res.status(500).json({ success: false, msg: 'Internal server error.' });
+    }
 });
 
 // Register (Create) a new user
@@ -80,27 +96,43 @@ router.post('/login', asyncHandler(async (req, res) => {
 router.put('/:id', async (req, res) => {
     if (req.body._id) delete req.body._id;
 
-    // Validate permission level if included in the update
-    if (req.body.permissionLevel && !['employee', 'manager', 'admin'].includes(req.body.permissionLevel)) {
-        return res.status(400).json({ success: false, msg: 'Invalid permission level.' });
+    try {
+        // Validate permission level if included in the update
+        if (req.body.permissionLevel && !['employee', 'manager', 'admin'].includes(req.body.permissionLevel)) {
+            return res.status(400).json({ success: false, msg: 'Invalid permission level.' });
+        }
+
+        // Hash the password if included in the update
+        if (req.body.password) {
+            const saltRounds = 10;
+            req.body.password = await bcrypt.hash(req.body.password, saltRounds);
+        }
+
+        const result = await User.updateOne({ _id: req.params.id }, req.body);
+
+        if (result.matchedCount) {
+            res.status(200).json({ success: true, msg: 'User Updated Successfully' });
+        } else {
+            res.status(404).json({ success: false, msg: 'Unable to Update User' });
+        }
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ success: false, msg: 'Internal server error.' });
     }
+});
 
-    // Validate password before updating user
-    if (req.body.password && !isPasswordValid(req.body.password)) {
-        return res.status(400).json({
-            success: false,
-            msg: 'Password must be at least 8 characters long and contain at least one letter, one digit, and one special character.',
-        });
-    }
-
-    const result = await User.updateOne({
-        _id: req.params.id,
-    }, req.body);
-
-    if (result.matchedCount) {
-        res.status(200).json({ success: true, msg: 'User Updated Successfully' });
-    } else {
-        res.status(404).json({ success: false, msg: 'Unable to Update User' });
+// Delete a user by ID
+router.delete('/:id', async (req, res) => {
+    try {
+        const result = await User.deleteOne({ _id: req.params.id });
+        if (result.deletedCount > 0) {
+            res.status(200).json({ success: true, msg: 'User deleted successfully.' });
+        } else {
+            res.status(404).json({ success: false, msg: 'User not found.' });
+        }
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ success: false, msg: 'Internal server error.' });
     }
 });
 
