@@ -69,23 +69,27 @@ const InventoryPage = () => {
 
 return (
   <div>
-    <Container maxWidth="xl" style={{ marginTop: '24px' }}>
-    <ProductFilters onSearch={handleSearch} onFilter={handleFilter} />
-    {editItem ? (
-      <ProductForm initialValues={editItem} onSubmit={handleSubmitForm} />
-    ) : (
-      <Grid container spacing={3} style={{ margin: '0px' }}>
-        {filteredInventory.map((product) => (
-          <Grid item key={product._id}>
-            <InventoryCard
-              {...product}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
-          </Grid>
-        ))}
-      </Grid>
-    )}
+    <Container maxWidth="xl" style={{ marginTop: '24px', paddingTop: 64 }}>
+      {editItem ? null : (
+        <>
+          <ProductFilters onSearch={handleSearch} onFilter={handleFilter} />
+        </>
+      )}
+      {editItem ? (
+        <ProductForm initialValues={editItem} onSubmit={handleSubmitForm} />
+      ) : (
+        <Grid container spacing={3} style={{ margin: '0px' }}>
+          {filteredInventory.map((product) => (
+            <Grid item key={product._id}>
+              <InventoryCard
+                {...product}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Container>
   </div>
 );

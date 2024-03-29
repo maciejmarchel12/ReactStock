@@ -31,7 +31,7 @@ const LoginPage = () => {
     }
 
     return (
-        <Container component="main" maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8 }}>
+        <Container component="main" maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8, paddingTop: 20 }}>
             <Typography component="h2" variant="h5">
                 Login page
             </Typography>
@@ -68,9 +68,6 @@ const LoginPage = () => {
                     Log in
                 </Button>
             </Box>
-            <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-                Not Registered? <Link to="/register">Sign Up!</Link>
-            </Typography>
             <Snackbar
                 open={!!error}
                 autoHideDuration={6000}

@@ -52,7 +52,7 @@ const SignUpPage = () => {
     // Return SignUp Form
 
     return (
-        <Container component="main" maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8 }}>
+        <Container component="main" maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8, paddingTop: 20 }}>
             <Typography component="h2" variant="h5">
                 SignUp page
             </Typography>
@@ -120,9 +120,6 @@ const SignUpPage = () => {
                     Register
                 </Button>
             </Box>
-            <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-                Already have an account? <Link to="/login">Log In!</Link>
-            </Typography>
             <Snackbar
                 open={!!error}
                 autoHideDuration={6000}

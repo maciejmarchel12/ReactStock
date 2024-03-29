@@ -34,7 +34,7 @@ const ProductForm = ({ initialValues, onSubmit }) => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" mt={5}>
+    <Box display="flex" flexDirection="column" alignItems="center" mt={5} style={{ paddingTop: 64 }}>
       <form onSubmit={handleSubmit}>
         <Box mb={2}>
           <TextField

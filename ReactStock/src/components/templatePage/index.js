@@ -6,7 +6,7 @@ const TemplatePage = ({ children }) => {
     <div>
       <CssBaseline />
 
-      <Container component="main" maxWidth="lg">
+      <Container component="main" maxWidth="lg" style={{ paddingTop: 64 }}>
         <Paper elevation={3} style={{ padding: 20, marginTop: 20 }}>
           <Typography component="div">
             {children}

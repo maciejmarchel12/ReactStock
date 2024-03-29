@@ -72,7 +72,7 @@ const UserPage = () => {
   };
 
   return (
-    <Container maxWidth="lg" style={{ marginTop: '24px' }}>
+    <Container maxWidth="xl" style={{ marginTop: '24px', paddingTop: 64 }}>
       <Typography variant="h4" gutterBottom>
         User Dashboard
       </Typography>
