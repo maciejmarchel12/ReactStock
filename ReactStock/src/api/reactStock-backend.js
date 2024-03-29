@@ -38,6 +38,65 @@ export const signup = async (username, password, permissionLevel) => {
     }
 };
 
+// Update user API
+export const updateUser = async (userId, userData) => {
+    try {
+        const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'put',
+            body: JSON.stringify(userData)
+        });
+        return response.json();
+    } catch (error) {
+        console.error('Error updating user:', error);
+        throw error;
+    }
+};
+
+// Delete user API
+export const deleteUser = async (userId) => {
+    try {
+        const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
+            method: 'delete'
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.msg || 'Failed to delete user');
+        }
+        return data;
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        throw error;
+    }
+};
+
+// Get a user by ID
+export const getUserById = async (userId) => {
+    try {
+        const response = await fetch(`http://localhost:8080/api/users/${userId}`);
+        return response.json();
+    } catch (error) {
+        console.error('Error getting user by ID:', error);
+        throw error;
+    }
+};
+
+// Get all Users
+export const fetchUsers = async () => {
+    try {
+        const response = await fetch('http://localhost:8080/api/users');
+        if (!response.ok) {
+            throw new Error('Failed to fetch users');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        throw error;
+    }
+};
+
 // PRODUCTS
 
 // Create a new product

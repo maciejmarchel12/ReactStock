@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import InventoryCard from '../components/inventoryCard';
 import ProductForm from '../components/productForm';
+import ProductFilters from '../components/productFilters';
 import { getAllProducts, deleteProductById } from '../api/reactStock-backend';
+import { Grid, Container} from "@mui/material";
 //import { AuthContext } from '../contexts/authContext';
 
 const InventoryPage = () => {
   const [inventory, setInventory] = useState([]);
   const [editItem, setEditItem] = useState(null);
+  const [filteredInventory, setFilteredInventory] = useState([]);
 
   useEffect(() => {
     fetchInventory();
@@ -16,8 +19,26 @@ const InventoryPage = () => {
     try {
       const products = await getAllProducts();
       setInventory(products);
+      setFilteredInventory(products);
     } catch (error) {
       console.error('Error fetching inventory:', error);
+    }
+  };
+
+  const handleSearch = (value) => {
+    const filteredProducts = inventory.filter(product => {
+      const searchFields = ['productName', 'barcode', 'productType'];
+      return searchFields.some(field => product[field].toLowerCase().includes(value.toLowerCase()));
+    });
+    setFilteredInventory(filteredProducts);
+  };
+
+  const handleFilter = (value) => {
+    if (value === '') {
+      setFilteredInventory(inventory);
+    } else {
+      const filteredProducts = inventory.filter(product => product.storeLocation === value);
+      setFilteredInventory(filteredProducts);
     }
   };
 
@@ -29,6 +50,7 @@ const InventoryPage = () => {
     try {
       await deleteProductById(id);
       setInventory((prevInventory) => prevInventory.filter(item => item.id !== id));
+      setFilteredInventory(prevFilteredInventory => prevFilteredInventory.filter(item => item.id !== id));
       await fetchInventory();
     } catch (error) {
       console.error('Error deleting product:', error);
@@ -45,22 +67,28 @@ const InventoryPage = () => {
     }
 };
 
-  return (
-    <div>
-      {editItem ? (
-        <ProductForm initialValues={editItem} onSubmit={handleSubmitForm} />
-      ) : (
-        inventory.map((product) => (
-          <InventoryCard
-            key={product._id} // Ensure each InventoryCard has a unique key
-            {...product}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        ))
-      )}
-    </div>
-  );
+return (
+  <div>
+    <Container maxWidth="xl" style={{ marginTop: '24px' }}>
+    <ProductFilters onSearch={handleSearch} onFilter={handleFilter} />
+    {editItem ? (
+      <ProductForm initialValues={editItem} onSubmit={handleSubmitForm} />
+    ) : (
+      <Grid container spacing={3} style={{ margin: '0px' }}>
+        {filteredInventory.map((product) => (
+          <Grid item key={product._id}>
+            <InventoryCard
+              {...product}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          </Grid>
+        ))}
+      </Grid>
+    )}
+    </Container>
+  </div>
+);
 };
 
 export default InventoryPage;

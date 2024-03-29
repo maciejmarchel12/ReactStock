@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { createProduct, updateProductById } from '../../api/reactStock-backend';
+import { Navigate, useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 
 const ProductForm = ({ initialValues, onSubmit }) => {
   const [formData, setFormData] = useState(initialValues);
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -21,6 +27,7 @@ const ProductForm = ({ initialValues, onSubmit }) => {
         await createProduct(formData);
       }
       onSubmit(); // Notify parent component about successful submission
+      navigate('/inventoryPage')
     } catch (error) {
       console.error('Error submitting product form:', error);
     }
@@ -76,13 +83,20 @@ const ProductForm = ({ initialValues, onSubmit }) => {
           />
         </Box>
         <Box mb={2}>
-          <TextField
-            label="Store Location"
-            name="storeLocation"
-            value={formData.storeLocation}
-            onChange={handleChange}
-            required
-          />
+          <FormControl fullWidth>
+            <InputLabel id="store-location-label">Store Location</InputLabel>
+            <Select
+              labelId="store-location-label"
+              id="store-location-select"
+              name="storeLocation"
+              value={formData.storeLocation}
+              onChange={handleChange}
+              required
+            >
+              <MenuItem value="OnSite">OnSite</MenuItem>
+              <MenuItem value="Online">Online</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
         <Button type="submit" variant="contained" color="primary">
           Save Changes
