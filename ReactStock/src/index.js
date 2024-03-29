@@ -60,7 +60,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <Suspense fallback={<div>Loading...</div>}>
         <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
+        <BrowserRouter>
             <AuthContextProvider>
             <Header />
               <Routes>
@@ -78,8 +78,8 @@ const App = () => {
                 </Route>
               </Routes>
             </AuthContextProvider>
+            </BrowserRouter>
             <Footer />
-          </BrowserRouter>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </Suspense>

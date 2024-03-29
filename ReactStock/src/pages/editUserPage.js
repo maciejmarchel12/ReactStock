@@ -52,7 +52,7 @@ const EditUserPage = () => {
     // Return EditUser Form
 
     return (
-        <Container component="main" maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8 }}>
+        <Container component="main" maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8, paddingTop: 20 }}>
             <Typography component="h2" variant="h5">
                 Edit User
             </Typography>

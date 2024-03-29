@@ -7,7 +7,7 @@ const Header = () => {
   const { isAuthenticated, permissionLevel, signout } = useContext(AuthContext);
 
   return (
-    <AppBar position="static" style={{ top: 0, left: 0, right: 0, zIndex: 1000 }}>
+    <AppBar position="fixed" style={{ top: 0, left: 0, right: 0, zIndex: 1000 }}>
       <Toolbar>
         <Button component={Link} to="/" color="inherit">
           Home
