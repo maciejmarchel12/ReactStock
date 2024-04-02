@@ -4,12 +4,11 @@ import { scanBarcode } from "../../api/reactStock-backend";
 import { useNavigate } from 'react-router-dom';
 
 const BarcodeScanner = ({ onBarcodeScanned, isSubtractMode }) => {
-    const navigate = useNavigate(); // Get the navigate function from the hook
+    const navigate = useNavigate();
 
-    // Define handleBarcodeScan as a memoized callback to prevent unnecessary re-renders
     const handleBarcodeScan = useCallback(async (scannedBarcode) => {
         try {
-            console.log('Is Subtract Mode:', isSubtractMode); // Check if isSubtractMode is received correctly
+            console.log('Is Subtract Mode:', isSubtractMode); // Checking if isSubtractMode is received correctly
             const product = await scanBarcode(scannedBarcode, isSubtractMode);
             if (product) {
                 onBarcodeScanned(); // Notify parent component about successful barcode scan
@@ -19,14 +18,14 @@ const BarcodeScanner = ({ onBarcodeScanned, isSubtractMode }) => {
         } catch (error) {
             console.error('Error fetching product:', error);
         }
-    }, [isSubtractMode, onBarcodeScanned]); // Include isSubtractMode and onBarcodeScanned in the dependencies array
+    }, [isSubtractMode, onBarcodeScanned]); //dependencies array
 
-    // Use useEffect to update handleBarcodeScan when isSubtractMode changes
+    // useEffect to update handleBarcodeScan when isSubtractMode changes
     useEffect(() => {
         // No cleanup needed
-    }, [isSubtractMode, handleBarcodeScan]); // Include isSubtractMode and handleBarcodeScan in the dependencies array
+    }, [isSubtractMode, handleBarcodeScan]); // dependencies array 
 
-    // Navigate to the InventoryPage after toggling the switch
+    // Navigate to the InventoryPage after toggling the switch WIP
     const handleToggleSubtractMode = () => {
         navigate('/inventoryPage');
     };
@@ -41,7 +40,6 @@ const BarcodeScanner = ({ onBarcodeScanned, isSubtractMode }) => {
                 constraints={{ width: 640, height: 480 }}
                 style={{ width: '100%', height: '100%' }}
             />
-            {/* You can add a button or any other UI element to toggle the subtract mode */}
             <button onClick={handleToggleSubtractMode}>Toggle Subtract Mode</button>
         </div>
     );
