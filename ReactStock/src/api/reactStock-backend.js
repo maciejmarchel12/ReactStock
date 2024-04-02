@@ -167,3 +167,48 @@ export const deleteProductById = async (productId) => {
         throw error;
     }
 };
+
+// Get product by barcode
+export const getProductByBarcode = async (barcode) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/products?barcode=${barcode}`);
+      return response.json();
+    } catch (error) {
+      console.error('Error getting product by barcode:', error);
+      throw error;
+    }
+  };
+
+// Barcode Scanning
+export const scanBarcode = async (barcode, isSubtractMode) => {
+    try {
+      const response = await fetch('http://localhost:8080/api/products/scan', {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'post',
+        body: JSON.stringify({ barcode, isSubtractMode })
+      });
+      return response.json();
+    } catch (error) {
+      console.error('Error scanning barcode:', error);
+      throw error;
+    }
+};
+
+// Update a product by barcode
+export const updateProductByBarcode = async (barcode, updatedData) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/products/updateByBarcode/${barcode}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedData),
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error('Error updating product by barcode: ' + error.message);
+    }
+};

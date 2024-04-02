@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { TextField, MenuItem, Grid } from "@mui/material";
+import React from 'react';
+import { TextField, MenuItem, Grid, FormControlLabel, Switch } from "@mui/material";
 
-const ProductFilters = ({ onSearch, onFilter }) => {
-  const [searchValue, setSearchValue] = useState('');
-  const [filterValue, setFilterValue] = useState('');
+const ProductFilters = ({ onSearch, onFilter}) => {
+  const [searchValue, setSearchValue] = React.useState('');
+  const [filterValue, setFilterValue] = React.useState('');
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -17,7 +17,7 @@ const ProductFilters = ({ onSearch, onFilter }) => {
 
   return (
     <Grid container spacing={2} alignItems="center" style={{ marginBottom: '16px' }}>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} sm={4}>
         <TextField
           label="Search by Product Name, Barcode, or Type"
           variant="outlined"
@@ -26,7 +26,7 @@ const ProductFilters = ({ onSearch, onFilter }) => {
           fullWidth
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} sm={4}>
         <TextField
           select
           label="Filter by Store Location"

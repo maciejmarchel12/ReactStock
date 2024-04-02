@@ -3,17 +3,23 @@ import InventoryCard from '../components/inventoryCard';
 import ProductForm from '../components/productForm';
 import ProductFilters from '../components/productFilters';
 import { getAllProducts, deleteProductById } from '../api/reactStock-backend';
-import { Grid, Container} from "@mui/material";
-//import { AuthContext } from '../contexts/authContext';
+import { Grid, Container } from "@mui/material";
+import BarcodeScanner from '../components/barcodeScan';
+import SubtractModeSwitch from '../components/subtractSwitch';
 
 const InventoryPage = () => {
   const [inventory, setInventory] = useState([]);
   const [editItem, setEditItem] = useState(null);
   const [filteredInventory, setFilteredInventory] = useState([]);
+  const [isSubtractMode, setIsSubtractMode] = useState(true);
 
   useEffect(() => {
     fetchInventory();
-  }, []); // Fetch inventory on component mount
+  }, []);
+
+  const handleBarcodeScanned = async () => {
+    await fetchInventory();
+  };
 
   const fetchInventory = async () => {
     try {
@@ -42,6 +48,13 @@ const InventoryPage = () => {
     }
   };
 
+  const handleToggleSubtractMode = () => {
+    console.log('Toggle subtract mode');
+    setIsSubtractMode(!isSubtractMode);
+    console.log('Subtract Mode:', isSubtractMode);
+    fetchInventory(); // Fetch inventory again after toggling subtract mode
+  };
+
   const handleEdit = (item) => {
     setEditItem(item);
   };
@@ -59,59 +72,46 @@ const InventoryPage = () => {
 
   const handleSubmitForm = async () => {
     try {
-        // Reload inventory after form submission
         await fetchInventory();
         setEditItem(null);
     } catch (error) {
         console.error('Error handling form submission:', error);
     }
-};
+  };
 
-return (
-  <div>
-    <Container maxWidth="xl" style={{ marginTop: '24px', paddingTop: 64 }}>
-      {editItem ? null : (
-        <>
-          <ProductFilters onSearch={handleSearch} onFilter={handleFilter} />
-        </>
-      )}
-      {editItem ? (
-        <ProductForm initialValues={editItem} onSubmit={handleSubmitForm} />
-      ) : (
-        <Grid container spacing={3} style={{ margin: '0px' }}>
-          {filteredInventory.map((product) => (
-            <Grid item key={product._id}>
-              <InventoryCard
-                {...product}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      )}
-    </Container>
-  </div>
-);
+  return (
+    <div>
+      <BarcodeScanner 
+        onBarcodeScanned={handleBarcodeScanned} 
+        isSubtractMode={isSubtractMode} 
+      />
+      <Container maxWidth="xl" style={{ marginTop: '24px', paddingTop: 64 }}>
+        <ProductFilters 
+          onSearch={handleSearch} 
+          onFilter={handleFilter} 
+        />
+      <SubtractModeSwitch
+        isSubtractMode={isSubtractMode} 
+        setIsSubtractMode={setIsSubtractMode} 
+      />
+        {!editItem ? (
+          <Grid container spacing={3} style={{ margin: '0px' }}>
+            {filteredInventory.map((product) => (
+              <Grid item key={product._id}>
+                <InventoryCard
+                  {...product}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <ProductForm initialValues={editItem} onSubmit={handleSubmitForm} />
+        )}
+      </Container>
+    </div>
+  );
 };
 
 export default InventoryPage;
-
-// OLD
-// const InventoryPage = ({ inventory }) => {
-//   const { isAuthenticated, permissionLevel } = useContext(AuthContext);
-
-//   return (
-//     <div>
-//       {inventory && inventory.map((product, index) => (
-//         <InventoryCard key={index}
-//         {...product}
-//          isAuthenticated={isAuthenticated}
-//          permissionLevel={permissionLevel}
-//          />
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default InventoryPage;
