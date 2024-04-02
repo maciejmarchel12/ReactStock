@@ -1,25 +1,32 @@
-// SubtractModeSwitch.js
-import React from 'react';
-import { Switch, FormControlLabel } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Button, Snackbar } from "@mui/material";
 
 const SubtractModeSwitch = ({ isSubtractMode, setIsSubtractMode }) => {
-    const navigate = useNavigate();
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
 
     const handleToggleSubtractMode = () => {
         setIsSubtractMode(!isSubtractMode);
-        console.log('Toggle subtract mode:', !isSubtractMode); //check toggle
-
-        //Band aid fix to renavigate to the inventoryPage so that the reader remounts
-        navigate('/inventoryPage')
+        setSnackbarOpen(true);
+        console.log('Toggle subtract mode:', !isSubtractMode); // Check toggle
     };
 
-  return (
-    <FormControlLabel
-      control={<Switch checked={isSubtractMode} onChange={handleToggleSubtractMode} />}
-      label="Subtract Mode"
-    />
-  );
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
+    };
+
+    return (
+        <>
+            <Button variant="contained" onClick={handleToggleSubtractMode}>
+                {isSubtractMode ? "Disable Subtract Mode" : "Enable Subtract Mode"}
+            </Button>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={2000}
+                onClose={handleCloseSnackbar}
+                message={isSubtractMode ? "Subtract Mode Enabled" : "Subtract Mode Disabled"}
+            />
+        </>
+    );
 };
 
 export default SubtractModeSwitch;
