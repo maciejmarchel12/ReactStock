@@ -16,13 +16,28 @@ router.post('/', async (req, res) => {
 
 // Route to get all products
 router.get('/', async (req, res) => {
-    try {
-        const products = await Product.find();
-        res.status(200).json(products);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal server error'})
-    }
+  try {
+      const products = await Product.find();
+      res.status(200).json({ series: products }); // Wrap products in a property named 'series'
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error'})
+  }
+});
+
+// Route to get all products for pie chart
+router.get('/pie-chart', async (req, res) => {
+  try {
+      const products = await Product.find();
+      const pieChartData = products.map(product => ({
+          label: product.productName, // Change to the appropriate property name that represents the label
+          value: parseInt(product.amountAvailable) // Convert amountAvailable to an integer
+      }));
+      res.status(200).json(pieChartData);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error'})
+  }
 });
 
 // Route to get a single product by ID

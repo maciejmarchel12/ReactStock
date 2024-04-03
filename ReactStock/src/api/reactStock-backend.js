@@ -120,7 +120,8 @@ export const createProduct = async (productData) => {
 export const getAllProducts = async () => {
     try {
         const response = await fetch('http://localhost:8080/api/products/');
-        return response.json();
+        const data = await response.json();
+        return data.series || [];
     } catch (error) {
         console.error('Error getting products:', error);
         throw error;
@@ -212,3 +213,16 @@ export const updateProductByBarcode = async (barcode, updatedData) => {
       throw new Error('Error updating product by barcode: ' + error.message);
     }
 };
+
+// Get all products for pie chart
+export const getAllProductsForPieChart = async () => {
+    try {
+        const response = await fetch('http://localhost:8080/api/products/pie-chart');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error getting products for pie chart:', error);
+        throw error;
+    }
+};
+
