@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import usersRouter from './api/users';
 import productRouter from './api/products'
+import activityRouter from './api/activities'
 import './db';
 import authenticate from './authenticate';
 import defaultErrHandler from './errHandler'
@@ -17,6 +18,7 @@ app.use(cors())
 app.use(express.json());
 app.use('/api/users', usersRouter);
 app.use('/api/products', productRouter);
+app.use('/api/activities', activityRouter);
 app.use(defaultErrHandler);
 
 // Example Route

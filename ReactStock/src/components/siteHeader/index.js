@@ -25,6 +25,12 @@ const Header = () => {
           </Button>
         )}
 
+        {isAuthenticated && (permissionLevel === 'manager' || permissionLevel === 'admin') && (
+          <Button component={Link} to="/activityLogsPage" color="inherit">
+            Activity Logs
+          </Button>
+        )}
+
         <Button component={Link} to="/UserPage" color="inherit">
           User Page
         </Button>

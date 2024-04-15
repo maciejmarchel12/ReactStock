@@ -14,6 +14,7 @@ import Header from './components/siteHeader/index.js';
 const HomePage = lazy(() => import('./pages/homePage'));
 const Inventory = lazy(() => import('./pages/inventoryPage'));
 const AddProduct = lazy(() => import('./pages/addProductPage'));
+const ActivityLog = lazy(() => import('./pages/activityLogsPage'));
 // User lazy load
 const LoginPage = lazy(() => import('./pages/loginPage'));
 const UserPage = lazy(() => import('./pages/userPage'));
@@ -71,6 +72,7 @@ const App = () => {
                   path="/"
                   element={<ProtectedRoutes />}
                 >
+                  <Route path="/activityLogsPage" element={<ActivityLog />} />
                   <Route path="/UserPage" element={<UserPage />} />
                   <Route path="/addProductPage" element={<AddProduct onAddProduct={handleAddProduct} />} />
                   <Route path="/inventoryPage" element={<Inventory inventory={inventory} />} />
