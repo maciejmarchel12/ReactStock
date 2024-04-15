@@ -1,27 +1,41 @@
 import express from 'express';
 import Product from './productModel';
+import logActivityMiddleware from '../../activityLogger/logActivitiyMiddleware';
+import authenticate from '../../authenticate';
 
 const router = express.Router();
 
+// Middleware for error handling
+const errorHandler = (res, error) => {
+  console.error(error);
+  res.status(500).json({ message: 'Internal server error' });
+};
+
+// Middleware for authentication
+const checkAuthentication = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+  next();
+};
+
 // Route to create a new product
-router.post('/', async (req, res) => {
-    try {
-        const newProduct = await Product.create(req.body);
-        res.status(201).json(newProduct);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal server error'})
-    }
+router.post('/', authenticate, logActivityMiddleware, async (req, res) => {
+  try {
+    const newProduct = await Product.create(req.body);
+    res.status(201).json({ success: true, msg: 'Product Created Successfully' });
+  } catch (error) {
+    errorHandler(res, error);
+  }
 });
 
 // Route to get all products
 router.get('/', async (req, res) => {
   try {
-      const products = await Product.find();
-      res.status(200).json({ series: products }); // Wrap products in a property named 'series'
+    const products = await Product.find();
+    res.status(200).json({ series: products });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error'})
+    errorHandler(res, error);
   }
 });
 
@@ -42,44 +56,47 @@ router.get('/pie-chart', async (req, res) => {
 
 // Route to get a single product by ID
 router.get('/:id', async (req, res) => {
-    try {
+  try {
       const product = await Product.findById(req.params.id);
       if (!product) {
-        return res.status(404).json({ message: 'Product not found' });
+          return res.status(404).json({ message: 'Product not found' });
+      }
+      if (!product._id) {
+          return res.status(500).json({ message: 'Product ID is missing' });
       }
       res.status(200).json(product);
-    } catch (error) {
+  } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal server error' });
-    }
+  }
 });
 
 // Route to update a product by ID
-router.put('/:id', async (req, res) => {
-    try {
-      const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
-      if (!updatedProduct) {
-        return res.status(404).json({ message: 'Product not found' });
-      }
-      res.status(200).json(updatedProduct);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
+router.put('/:id', authenticate, logActivityMiddleware, async (req, res) => {
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
     }
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 });
 
 // Route to delete a product by ID
-router.delete('/:id', async (req, res) => {
-    try {
-      const deletedProduct = await Product.findByIdAndDelete(req.params.id);
-      if (!deletedProduct) {
-        return res.status(404).json({ message: 'Product not found' });
-      }
-      res.status(200).json({ message: 'Product deleted successfully' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
+router.delete('/:id', authenticate, logActivityMiddleware, async (req, res) => {
+  try {
+    const result = await Product.deleteOne({ _id: req.params.id });
+    if (result.deletedCount > 0) {
+      res.status(200).json({ success: true, msg: 'Product Deleted Successfully' });
+    } else {
+      res.status(404).json({ success: false, msg: 'Product Not Found' });
     }
+  } catch (error) {
+    errorHandler(res, error);
+  }
 });
 
 //Barcode Scanning
@@ -125,26 +142,20 @@ router.post('/scan', async (req, res) => {
 });
 
 // Route to update a product by barcode
-router.put('/updateByBarcode/:barcode', async (req, res) => {
+router.put('/updateByBarcode/:barcode', authenticate, logActivityMiddleware, async (req, res) => {
   try {
-      const { barcode } = req.params;
-      const updatedData = req.body;
-      const product = await Product.findOne({ barcode });
+    const { barcode } = req.params;
+    const updatedData = req.body;
 
-      if (!product) {
-          return res.status(404).json({ message: 'Product not found' });
-      }
+    const product = await Product.findOneAndUpdate({ barcode }, updatedData, { new: true });
 
-      const updatedProduct = await Product.findByIdAndUpdate(product._id, updatedData, { new: true });
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
 
-      if (!updatedProduct) {
-          return res.status(404).json({ message: 'Error updating product' });
-      }
-
-      res.status(200).json(updatedProduct);
+    res.status(200).json(product);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
+    errorHandler(res, error);
   }
 });
 
