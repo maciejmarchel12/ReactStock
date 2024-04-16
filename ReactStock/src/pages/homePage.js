@@ -25,6 +25,7 @@ const HomePage = () => {
     <div style={{ backgroundColor: theme.palette.background.bkg, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
     <Container style={{ marginTop: '60px', paddingTop: 64 }}>
       <h1>Dashboard</h1>
+      <h2>SouthEast Supplements - Powered by ReactStock</h2>
       <Grid container spacing={2} id="charts-container" >
         {isChartsLoaded ? (
           <Suspense fallback={<div>Loading...</div>}>
