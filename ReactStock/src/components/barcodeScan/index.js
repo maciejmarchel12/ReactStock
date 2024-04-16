@@ -2,9 +2,11 @@ import React, { useEffect, useCallback } from "react";
 import BarcodeReader from 'react-barcode-reader';
 import { scanBarcode } from "../../api/reactStock-backend";
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../../contexts/themeContext';
 
 const BarcodeScanner = ({ onBarcodeScanned, isSubtractMode }) => {
     const navigate = useNavigate();
+    const theme = useTheme();
 
     const handleBarcodeScan = useCallback(async (scannedBarcode) => {
         try {
@@ -40,7 +42,7 @@ const BarcodeScanner = ({ onBarcodeScanned, isSubtractMode }) => {
                 constraints={{ width: 640, height: 480 }}
                 style={{ width: '100%', height: '100%' }}
             />
-            <button onClick={handleToggleSubtractMode}>Toggle Subtract Mode</button>
+            <button style={{backgroundColor: theme.palette.primary.main }} onClick={handleToggleSubtractMode}>Toggle Subtract Mode</button>
         </div>
     );
 };

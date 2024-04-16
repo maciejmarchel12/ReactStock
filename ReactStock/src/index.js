@@ -4,11 +4,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools';
 import Footer from './components/siteFooter';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 // import ProductManager from './components/productManager';
 import AuthContextProvider, { AuthContext } from "./contexts/authContext";
 import ProtectedRoutes from "./protectedRoutes";
 import Header from './components/siteHeader/index.js';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ThemeProvider, useTheme } from './contexts/themeContext';
+// import Theme from './components/theme';
 
 // Lazy load for page components
 const HomePage = lazy(() => import('./pages/homePage'));
@@ -31,39 +34,27 @@ const queryClient = new QueryClient({
   },
 });
 
-// Custom Theme
-const theme = createTheme({
-  // Define your theme configuration here
-  palette: {
-    primary: {
-      main: '#ff0000', // Example primary color
-    },
-    secondary: {
-      main: '#00ff00', // Example secondary color
-    },
-    // Add more theme configurations as needed
-  },
-  typography: {
-    // Define typography configurations here
-    fontFamily: 'Arial, sans-serif', // Example font family
-  },
-});
-
 const App = () => {
   const { isAuthenticated, permissionLevel } = useContext(AuthContext) || {};
   const [inventory, setInventory] = useState([]);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const Theme = useTheme();
+
+  const handleSettingsToggle = () => {
+    setSettingsOpen(!settingsOpen);
+  }
 
   const handleAddProduct = (newProduct) => {
     setInventory((prevInventory) => [...prevInventory, newProduct]);
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={Theme}>
       <Suspense fallback={<div>Loading...</div>}>
         <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-            <AuthContextProvider>
-            <Header />
+          <AuthContextProvider>
+            <Header settingsOpen={settingsOpen} handleSettingsToggle={handleSettingsToggle} />
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/LoginPage" element={<LoginPage />} />
@@ -83,6 +74,7 @@ const App = () => {
             </BrowserRouter>
             <Footer />
           <ReactQueryDevtools initialIsOpen={false} />
+            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </QueryClientProvider>
       </Suspense>
     </ThemeProvider>

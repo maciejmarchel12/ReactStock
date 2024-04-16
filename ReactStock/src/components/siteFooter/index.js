@@ -23,6 +23,12 @@ const Footer = () => {
         </IconButton>
         <Typography variant="caption">LinkedIn</Typography>
         </div>
+
+        <div>
+          <Typography>
+            Student: Maciej Marchel, Project Supervisor: Abraham Lizy
+          </Typography>
+        </div>
       </footer>
     );
   };
