@@ -5,6 +5,7 @@ import { deleteUser, fetchUsers } from '../api/reactStock-backend';
 import { Container, Typography, Card, CardContent, Avatar, Grid, Button, Snackbar } from "@mui/material";
 import MuiAlert from '@mui/material/Alert';
 import UserFilters from '../components/userFilters';
+import { useTheme } from '../contexts/themeContext';
 
 const UserPage = () => {
   const { isAuthenticated, permissionLevel } = useContext(AuthContext);
@@ -13,6 +14,7 @@ const UserPage = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false); //State for controlling the pop-up snackbar
   const navigate = useNavigate();
+  const theme = useTheme();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,6 +74,7 @@ const UserPage = () => {
   };
 
   return (
+    <div style={{ backgroundColor: theme.palette.background.bkg, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
     <Container maxWidth="xl" style={{ marginTop: '24px', paddingTop: 64 }}>
       <Typography variant="h4" gutterBottom>
         User Dashboard
@@ -80,7 +83,7 @@ const UserPage = () => {
       <Grid container spacing={2} justifyContent="flex-start">
         {filteredUsers.map((user) => (
           <Grid item key={user._id}>
-            <Card style={{ minWidth: '275px', maxWidth: '300px', marginRight: '16px', marginBottom: '16px', backgroundColor: user.username === userName ? '#1976d2' : '', color: user.username === userName ? '#fff' : '' }}>
+            <Card style={{ minWidth: '275px', maxWidth: '300px', marginRight: '16px', marginBottom: '16px', backgroundColor: user.username === userName ? '#1976d2' : theme.palette.field.main, color: user.username === userName ? '#fff' : '' }}>
               <CardContent>
                 <Avatar style={{ backgroundColor: user.username === userName ? '#fff' : '#1976d2', color: user.username === userName ? '#1976d2' : '#fff', width: '56px', height: '56px' }}>{user.username.charAt(0).toUpperCase()}</Avatar>
                 <Typography variant="h6" component="h2">
@@ -90,9 +93,9 @@ const UserPage = () => {
                 {isAuthenticated && (permissionLevel === 'admin' || permissionLevel === 'manager') && (
                   <>
                     {/* Edit button */}
-                    <Button variant="outlined" onClick={() => handleEditUser(user._id)}>Edit</Button>
+                    <Button variant="contained" style={{backgroundColor: theme.palette.primary.main }} onClick={() => handleEditUser(user._id)}>Edit</Button>
                     {/* Delete button */}
-                    <Button variant="outlined" onClick={() => handleDeleteUser(user._id)}>Delete</Button>
+                    <Button variant="contained" style={{backgroundColor: theme.palette.secondary.main }} onClick={() => handleDeleteUser(user._id)}>Delete</Button>
                   </>
                 )}
               </CardContent>
@@ -107,6 +110,7 @@ const UserPage = () => {
         </MuiAlert>
       </Snackbar>
     </Container>
+    </div>
   );
 };
 

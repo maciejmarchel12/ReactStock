@@ -1,13 +1,17 @@
 import React, { useContext } from 'react';
-import { AppBar, Toolbar, Button } from '@material-ui/core';
+import { AppBar, Toolbar, Button, IconButton  } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/authContext';
+import { Settings as SettingsIcon } from '@mui/icons-material';
+import { useTheme } from '../../contexts/themeContext';
+import Settings from '../settings';
 
-const Header = () => {
+const Header = ({ settingsOpen, handleSettingsToggle }) => {
   const { isAuthenticated, permissionLevel, signout } = useContext(AuthContext);
+  const theme = useTheme();
 
   return (
-    <AppBar position="fixed" style={{ top: 0, left: 0, right: 0, zIndex: 1000 }}>
+    <AppBar position="fixed" style={{ top: 0, left: 0, right: 0, zIndex: 1000, backgroundColor: theme.palette.background.default }}>
       <Toolbar>
         <Button component={Link} to="/" color="inherit">
           Home
@@ -34,18 +38,23 @@ const Header = () => {
         <Button component={Link} to="/UserPage" color="inherit">
           User Page
         </Button>
-        {isAuthenticated  ? (
-          <Button onClick={signout} color='inherit' style={{ marginLeft: 'auto'}}>
-            Logout
-          </Button>
-        ) : (
+
+        {isAuthenticated ? (
           <>
-        <Button component={Link} to="/LoginPage" color="inherit">
-          Login
-        </Button>
-        </>
+            <IconButton onClick={handleSettingsToggle} color="inherit" style={{ marginLeft: 'auto' }}>
+              <SettingsIcon />
+            </IconButton>
+            <Button onClick={signout} color='inherit'>
+              Logout
+            </Button>
+          </>
+        ) : (
+            <Button component={Link} to="/LoginPage" color="inherit">
+              Login
+            </Button>
         )}
       </Toolbar>
+      {settingsOpen && <Settings isOpen={settingsOpen} onClose={handleSettingsToggle} />}
     </AppBar>
   );
 };

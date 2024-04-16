@@ -6,6 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/system';
 import { AuthContext } from '../../contexts/authContext';
+import { useTheme } from '../../contexts/themeContext';
 
 const StyledCard = styled(Card)({
     width: 200,
@@ -23,6 +24,7 @@ const StyledCard = styled(Card)({
     // const history = useNavigate();
 
     const { isAuthenticated, permissionLevel } = useContext(AuthContext)
+    const theme = useTheme();
 
     console.log('isAuthenticated:', isAuthenticated);
     console.log('permissionLevel:', permissionLevel);
@@ -36,14 +38,14 @@ const StyledCard = styled(Card)({
     }
 
     return (
-      <StyledCard>
+      <StyledCard style={{backgroundColor: theme.palette.field.main }}>
         <StyledCardMedia
           component="img"
           src={image}
           alt={productName}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom variant="h5" component="div" title={productName}>
             {productName}
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -58,10 +60,10 @@ const StyledCard = styled(Card)({
           <Typography variant="body2" color="text.secondary">
             Store Location: {storeLocation}
           </Typography>
-          <Button variant="contained" color="primary" onClick={handleEdit}>Edit</Button>
+          <Button variant="contained" style={{backgroundColor: theme.palette.primary.main }} onClick={handleEdit}>Edit</Button>
           {isAuthenticated && (permissionLevel === 'admin' || permissionLevel === 'manager') && (
             <>
-              <Button variant="contained" color="secondary" onClick={handleDelete}>Delete</Button>
+              <Button variant="contained" style={{backgroundColor: theme.palette.secondary.main }} onClick={handleDelete}>Delete</Button>
             </>
           )}
         </CardContent>

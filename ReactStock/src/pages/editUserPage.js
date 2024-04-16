@@ -3,6 +3,22 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getUserById, updateUser } from "../api/reactStock-backend";
 import { AuthContext } from '../contexts/authContext';
 import { Container, Typography, TextField, Button, Box, Snackbar, MenuItem } from "@mui/material";
+import { useTheme } from "../contexts/themeContext";
+import { styled } from '@mui/material/styles';
+
+const CustomTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiInputLabel-root.Mui-focused': {
+    borderColor: theme.palette.outline.main
+  },
+
+  '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+    borderColor: theme.palette.outline.main
+  },
+  '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+    borderColor: theme.palette.outline.main
+  },
+  backgroundColor: theme.palette.field.main
+}));
 
 const EditUserPage = () => {
     const { userId } = useParams(); // Assuming you're using React Router to get the userId from the URL
@@ -12,6 +28,7 @@ const EditUserPage = () => {
     const [permissionLevel, setPermissionLevel] = useState("");
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const theme = useTheme();
 
     useEffect(() => {
         //Fetch the user details when the component is mounted
@@ -52,6 +69,7 @@ const EditUserPage = () => {
     // Return EditUser Form
 
     return (
+        <div style={{ backgroundColor: theme.palette.background.bkg, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <Container component="main" maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8, paddingTop: 20 }}>
             <Typography component="h2" variant="h5">
                 Edit User
@@ -59,7 +77,7 @@ const EditUserPage = () => {
             {/* Form for editing user details */}
             <Box component="form" sx={{ mt: 1 }}>
                 {/* Text field for username */}
-                <TextField
+                <CustomTextField
                     margin="normal"
                     required
                     fullWidth
@@ -72,9 +90,10 @@ const EditUserPage = () => {
                     onChange={e => {
                         setUserName(e.target.value);
                     }}
+                    theme={theme}
                 />
                 {/* Text field for password */}
-                <TextField
+                <CustomTextField
                     margin="normal"
                     fullWidth
                     name="password"
@@ -86,24 +105,27 @@ const EditUserPage = () => {
                     onChange={e => {
                         setPassword(e.target.value);
                     }}
+                    theme={theme}
                 />
                 {/* Dropdown for permission level */}
-                <TextField
+                <CustomTextField
                     select
                     fullWidth
                     margin="normal"
                     label="Permission Level"
                     value={permissionLevel}
                     onChange={e => setPermissionLevel(e.target.value)}
+                    theme={theme}
                 >
                     <MenuItem value="employee">Employee</MenuItem>
                     <MenuItem value="manager">Manager</MenuItem>
                     <MenuItem value="admin">Admin</MenuItem>
-                </TextField>
+                </CustomTextField>
                 {/* Button to update user */}
                 <Button
                     fullWidth
                     variant="contained"
+                    style={{backgroundColor: theme.palette.primary.main }}
                     onClick={handleUpdateUser}
                 >
                     Update User
@@ -117,6 +139,7 @@ const EditUserPage = () => {
                 message={error}
             />
         </Container>
+        </div>
     );
 };
 

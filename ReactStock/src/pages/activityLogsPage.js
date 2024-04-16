@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { getAllActivityLogs, deleteActivityLogById } from '../api/reactStock-backend';
 import { Container, Grid, Card, CardContent, Typography, Button } from '@mui/material';
+import { useTheme } from '../contexts/themeContext';
 
 const ActivityLogsPage = () => {
   const [activityLogs, setActivityLogs] = useState([]);
   const [isFetching, setIsFetching] = useState(false); // Flags to indicate if request is in progress
+  const theme = useTheme();
 
   useEffect(() => {
     fetchActivityLogs();
@@ -35,32 +37,34 @@ const ActivityLogsPage = () => {
   };
 
   return (
-    <Container maxWidth="md" style={{ marginTop: '24px', paddingTop: 64, paddingBottom: 64, overflowY: 'scroll' }}>
-      <h1>Activity Logs</h1>
-      <Grid container spacing={3}>
-        {activityLogs.map((log) => (
-          <Grid item xs={12} key={log._id}>
-            <Card>
-              <CardContent>
-                <Typography variant="h5" component="div">
-                  Action: {log.action}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {log.username ? `User: ${log.username}` : 'User: Unknown'}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Timestamp: {new Date(log.timestamp).toLocaleString()}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {log.details ? `Details: ${log.details}` : 'Details: No details available'}
-                </Typography>
-                <Button variant="contained" color="error" onClick={() => handleDeleteActivityLog(log._id)}>Delete</Button>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+    <div style={{ backgroundColor: theme.palette.background.bkg, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Container maxWidth="md" style={{ marginTop: '24px', paddingTop: 64, paddingBottom: 106 }}>
+        <h1>Activity Logs</h1>
+        <Grid container spacing={3}>
+          {activityLogs.map((log) => (
+            <Grid item xs={12} key={log._id}>
+              <Card style={{ backgroundColor: theme.palette.field.main}}>
+                <CardContent>
+                  <Typography variant="h5" component="div">
+                    Action: {log.action}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {log.username ? `User: ${log.username}` : 'User: Unknown'}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Timestamp: {new Date(log.timestamp).toLocaleString()}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {log.details ? `Details: ${log.details}` : 'Details: No details available'}
+                  </Typography>
+                  <Button variant="contained" style={{ backgroundColor: theme.palette.primary.main }} onClick={() => handleDeleteActivityLog(log._id)}>Delete</Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </div>
   );
 };
 

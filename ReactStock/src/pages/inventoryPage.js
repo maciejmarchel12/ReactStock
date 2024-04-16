@@ -4,18 +4,43 @@ import ProductForm from '../components/productForm';
 import ProductFilters from '../components/productFilters';
 import { getAllProducts, deleteProductById } from '../api/reactStock-backend';
 import { Grid, Container } from "@mui/material";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import BarcodeScanner from '../components/barcodeScan';
 import SubtractModeSwitch from '../components/subtractSwitch';
+import { useTheme } from '../contexts/themeContext';
 
 const InventoryPage = () => {
   const [inventory, setInventory] = useState([]);
   const [editItem, setEditItem] = useState(null);
   const [filteredInventory, setFilteredInventory] = useState([]);
   const [isSubtractMode, setIsSubtractMode] = useState(true);
+  const theme = useTheme();
 
   useEffect(() => {
     fetchInventory();
   }, []);
+
+  useEffect(() => {
+    inventory.forEach(checkAmountAvailable);
+  }, [inventory]);
+
+  // toast notifications
+  const checkAmountAvailable = (product) => {
+    console.log(`Checking amount available for ${product.productName}`);
+    if (product.amountAvailable <= 15) {
+      console.log(`${product.productName} is low in stock!`);
+      toast.warning(`${product.productName} is low in stock!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
 
   const handleBarcodeScanned = async () => {
     await fetchInventory();
@@ -24,8 +49,10 @@ const InventoryPage = () => {
   const fetchInventory = async () => {
     try {
       const products = await getAllProducts();
+      console.log('Fetched inventory:', products);
       setInventory(products);
       setFilteredInventory(products);
+    //  products.forEach(checkAmountAvailable); // Check the amount available for each product for toast notifs
     } catch (error) {
       console.error('Error fetching inventory:', error);
     }
@@ -80,7 +107,7 @@ const InventoryPage = () => {
   };
 
   return (
-    <div>
+    <div style={{ backgroundColor: theme.palette.background.bkg }}>
       <BarcodeScanner 
         onBarcodeScanned={handleBarcodeScanned} 
         isSubtractMode={isSubtractMode} 
