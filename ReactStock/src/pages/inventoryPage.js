@@ -87,13 +87,16 @@ const InventoryPage = () => {
   };
 
   const handleDelete = async (id) => {
-    try {
-      await deleteProductById(id);
-      setInventory((prevInventory) => prevInventory.filter(item => item.id !== id));
-      setFilteredInventory(prevFilteredInventory => prevFilteredInventory.filter(item => item.id !== id));
-      await fetchInventory();
-    } catch (error) {
-      console.error('Error deleting product:', error);
+    const confirmDelete = window.confirm('Are you sure you want to delete this product?');
+    if (confirmDelete) {
+      try {
+        await deleteProductById(id);
+        setInventory((prevInventory) => prevInventory.filter(item => item.id !== id));
+        setFilteredInventory(prevFilteredInventory => prevFilteredInventory.filter(item => item.id !== id));
+        await fetchInventory();
+      } catch (error) {
+        console.error('Error deleting product:', error);
+      }
     }
   };
 
@@ -107,12 +110,12 @@ const InventoryPage = () => {
   };
 
   return (
-    <div style={{ backgroundColor: theme.palette.background.bkg }}>
+    <div style={{ backgroundColor: theme.palette.background.bkg, minHeight: '100vh' }}>
       <BarcodeScanner 
         onBarcodeScanned={handleBarcodeScanned} 
         isSubtractMode={isSubtractMode} 
       />
-      <Container maxWidth="xl" style={{ marginTop: '24px', paddingTop: 64 }}>
+      <Container maxWidth="xl" style={{ marginTop: '24px', paddingTop: 64, paddingBottom: 98 }}>
         <ProductFilters 
           onSearch={handleSearch} 
           onFilter={handleFilter} 

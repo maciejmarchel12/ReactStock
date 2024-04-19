@@ -105,6 +105,12 @@ export const ThemeProvider = ({ children }) => {
   const selectedTheme = theme === 'dark' ? darkTheme : lightTheme;
   console.log('Current theme:', selectedTheme);
 
+    // Apply background color to <html> and <body> elements
+    if (typeof document !== 'undefined') {
+      document.documentElement.style.backgroundColor = selectedTheme.palette.background.bkg;
+      document.body.style.backgroundColor = selectedTheme.palette.background.bkg;
+    }
+
   return (
     <ThemeContext.Provider value={selectedTheme}>
       <ThemeUpdateContext.Provider value={toggleTheme}>

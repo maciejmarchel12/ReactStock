@@ -6,7 +6,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 const Footer = () => {
     return (
-      <footer style={{ backgroundColor: '#f0f0f0', padding: '20px', textAlign: 'center', position: 'fixed', bottom: '0', width: '100%', zIndex: '1000' }}>
+      <footer style={{ backgroundColor: '#f0f0f0', padding: '20px', textAlign: 'center', position: 'fixed', bottom: '0', left: '0', width: '100%', zIndex: '1000' }}>
         <div>
         <IconButton href="https://github.com/maciejmarchel12" target="_blank" rel="noopener noreferrer">
           <GitHubIcon />
