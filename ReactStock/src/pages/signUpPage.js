@@ -46,6 +46,11 @@ const SignUpPage = () => {
                 return;
             }
 
+            if (permissionLevel === 'admin' && context.permissionLevel !== 'admin') {
+                setError("Permission denied. Managers cannot create admin accounts.");
+                return;
+            }
+
             const success = await context.register(userName, password, permissionLevel);
             if (success) {
                 setRegistered(true);

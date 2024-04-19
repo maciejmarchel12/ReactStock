@@ -28,11 +28,14 @@ const ActivityLogsPage = () => {
   };
 
   const handleDeleteActivityLog = async (id) => {
-    try {
-      await deleteActivityLogById(id);
-      setActivityLogs((prevLogs) => prevLogs.filter(log => log._id !== id));
-    } catch (error) {
-      console.error('Error deleting activity log:', error);
+    const confirmDelete = window.confirm('Are you sure you want to delete this activity log?');
+    if (confirmDelete) {
+      try {
+        await deleteActivityLogById(id);
+        setActivityLogs((prevLogs) => prevLogs.filter(log => log._id !== id));
+      } catch (error) {
+        console.error('Error deleting activity log:', error);
+      }
     }
   };
 
@@ -41,7 +44,7 @@ const ActivityLogsPage = () => {
       <Container maxWidth="md" style={{ marginTop: '24px', paddingTop: 64, paddingBottom: 106 }}>
         <h1>Activity Logs</h1>
         <Grid container spacing={3}>
-          {activityLogs.map((log) => (
+          {activityLogs.reverse().map((log) => (
             <Grid item xs={12} key={log._id}>
               <Card style={{ backgroundColor: theme.palette.field.main}}>
                 <CardContent>

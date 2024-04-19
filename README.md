@@ -7,12 +7,20 @@
 
 My project is a web application inventory stock management system. The aim of the application is to provide a cheap, reliable and modular application for inventory tracking and managing. This is achieved with the use of modern technologies such as Node.JS, React.JS and a NoSQL database hosted through MongoDB.
 
+### Demo Video Link
+
+[(https://drive.google.com/file/d/14cgwYcoHe9DOZ3Ajc1eiVwMsssBPQ5gC/view?usp=drive_link)]
+
 ### Technology used
 Below is a list of the main technologies used for this project.
 
 - React.js (Frontend, styled with Material UI)
 - Node.js (Backend)
 - MongoDB with NoSQL (Database)
+
+### Current Issues Present
+
+Click the following link to see current issues present: [(https://github.com/maciejmarchel12/ReactStock/issues)]
 
 ### Features
 
