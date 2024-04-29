@@ -1,5 +1,5 @@
 import React, {lazy, Suspense, useState, useContext } from 'react';
-import { createRoot } from "react-dom";
+import ReactDOM from 'react-dom'; // Import ReactDOM
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -81,5 +81,7 @@ const App = () => {
   );
 };
 
-const rootElement = createRoot(document.getElementById('root'));
-rootElement.render(<App />);
+ReactDOM.render(<App />, document.getElementById('root')); // Render the App component using ReactDOM.render
+
+// const rootElement = createRoot(document.getElementById('root'));
+// rootElement.render(<App />);

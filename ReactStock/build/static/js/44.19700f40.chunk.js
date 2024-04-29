@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkfyp2024=self.webpackChunkfyp2024||[]).push([[44],{3044:(e,t,r)=>{r.r(t),r.d(t,{default:()=>a});var c=r(5043),n=r(8683);const a=e=>{let{chartId:t}=e;return c.useEffect((()=>{const e=new n.default({baseUrl:"https://charts.mongodb.com/charts-reactstock-ydgxe"}),r=document.createElement("div");return r.style.width="50%",r.style.height="300px",document.getElementById("charts-container").appendChild(r),e.createChart({chartId:t}).render(r),()=>{r.innerHTML=""}}),[t]),null}}}]);
+//# sourceMappingURL=44.19700f40.chunk.js.map
