@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node index.js",
-    "build": "",
     "dev": "babel-node ./initialise-dev/initDevDB.js && nodemon --exec npm start"
   },
   "author": "Maciej Marchel",
