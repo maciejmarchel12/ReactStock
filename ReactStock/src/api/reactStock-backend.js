@@ -1,5 +1,3 @@
-const BASE_URL = 'https://reactstock-backend.onrender.com';
-
 // Logging Activity Function
 const logActivity = async (action) => {
     try {
@@ -13,7 +11,7 @@ const logActivity = async (action) => {
         }
 
         // Send activity log request
-        const response = await fetch(`${BASE_URL}/api/activities/`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/activities/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -55,7 +53,7 @@ const getHeadersWithToken = () => {
 // Login API 
 export const login = async (username, password) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/users/login`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/users/login`, {
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -98,7 +96,7 @@ export const signup = async (username, password, permissionLevel) => {
         }
 
         // Makes the signup request with the bearer token in the headers
-        const response = await fetch(`${BASE_URL}/api/users?action=register`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/users?action=register`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token // Includes the bearer token in the headers
@@ -127,7 +125,7 @@ export const signup = async (username, password, permissionLevel) => {
 // Update user API
 export const updateUser = async (userId, userData) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/users/${userId}`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/users/${userId}`, {
             headers: getHeadersWithToken(),
             method: 'put',
             body: JSON.stringify(userData)
@@ -144,7 +142,7 @@ export const updateUser = async (userId, userData) => {
 // Delete user API
 export const deleteUser = async (userId) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/users/${userId}`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/users/${userId}`, {
             headers: getHeadersWithToken(),
             method: 'delete'
         });
@@ -160,7 +158,7 @@ export const deleteUser = async (userId) => {
 // Get a user by ID
 export const getUserById = async (userId) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/users/${userId}`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/users/${userId}`, {
             headers: getHeadersWithToken()
         });
         return response.json();
@@ -173,7 +171,7 @@ export const getUserById = async (userId) => {
 // Get all Users
 export const fetchUsers = async () => {
     try {
-        const response = await fetch(`${BASE_URL}/api/users`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/users`, {
             headers: getHeadersWithToken()
         });
         if (!response.ok) {
@@ -191,7 +189,7 @@ export const fetchUsers = async () => {
 // Create a new product
 export const createProduct = async (productData) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/products/`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/products/`, {
             headers: getHeadersWithToken(),
             method: 'post',
             body: JSON.stringify(productData)
@@ -208,7 +206,7 @@ export const createProduct = async (productData) => {
 // Get all products
 export const getAllProducts = async () => {
     try {
-        const response = await fetch(`${BASE_URL}/api/products/`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/products/`, {
             headers: getHeadersWithToken()
         });
         const data = await response.json();
@@ -222,7 +220,7 @@ export const getAllProducts = async () => {
 // Get a single product by ID
 export const getProductById = async (productId) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/products/${productId}`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/products/${productId}`, {
             headers: getHeadersWithToken()
         });
         return response.json();
@@ -235,7 +233,7 @@ export const getProductById = async (productId) => {
 // Update a product by ID
 export const updateProductById = async (productId, updatedData) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/products/${productId}`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/products/${productId}`, {
             headers: getHeadersWithToken(),
             method: 'put',
             body: JSON.stringify(updatedData)
@@ -252,7 +250,7 @@ export const updateProductById = async (productId, updatedData) => {
 // Delete a product by ID
 export const deleteProductById = async (productId) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/products/${productId}`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/products/${productId}`, {
             headers: getHeadersWithToken(),
             method: 'delete'
         });
@@ -272,7 +270,7 @@ export const deleteProductById = async (productId) => {
 // Get product by barcode
 export const getProductByBarcode = async (barcode) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/products/barcode/${barcode}`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/products/barcode/${barcode}`, {
             headers: getHeadersWithToken()
         });
         return response.json();
@@ -285,7 +283,7 @@ export const getProductByBarcode = async (barcode) => {
 // Barcode Scanning
 export const scanBarcode = async (barcode, isSubtractMode) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/products/scan`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/products/scan`, {
             headers: getHeadersWithToken(),
             method: 'post',
             body: JSON.stringify({ barcode, isSubtractMode })
@@ -300,7 +298,7 @@ export const scanBarcode = async (barcode, isSubtractMode) => {
 // Update a product by barcode
 export const updateProductByBarcode = async (barcode, updatedData) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/products/updateByBarcode/${barcode}`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/products/updateByBarcode/${barcode}`, {
             headers: getHeadersWithToken(),
             method: 'put',
             body: JSON.stringify(updatedData)
@@ -317,7 +315,7 @@ export const updateProductByBarcode = async (barcode, updatedData) => {
 // Get all products for pie chart
 export const getAllProductsForPieChart = async () => {
     try {
-        const response = await fetch(`${BASE_URL}/api/products/pie-chart`);
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/products/pie-chart`);
         const data = await response.json();
         return data;
     } catch (error) {
@@ -331,7 +329,7 @@ export const getAllProductsForPieChart = async () => {
 // Get all activity logs
 export const getAllActivityLogs = async () => {
     try {
-        const response = await fetch(`${BASE_URL}/api/activities/`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/activities/`, {
             headers: getHeadersWithToken()
         });
         if (!response.ok) {
@@ -347,7 +345,7 @@ export const getAllActivityLogs = async () => {
 // Get an activity log by ID
 export const getActivityLogById = async (activityLogId) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/activities/${activityLogId}`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/activities/${activityLogId}`, {
             headers: getHeadersWithToken()
         });
         return response.json();
@@ -360,7 +358,7 @@ export const getActivityLogById = async (activityLogId) => {
 // Delete an activity log by ID
 export const deleteActivityLogById = async (activityLogId) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/activities/${activityLogId}`, {
+        const response = await fetch(`https://reactstock-backend.onrender.com/api/activities/${activityLogId}`, {
             headers: getHeadersWithToken(),
             method: 'delete'
         });
