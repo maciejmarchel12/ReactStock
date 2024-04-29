@@ -1,11 +1,10 @@
 {
   "name": "reactstock-backend",
   "version": "1.0.0",
-  "type": "module",
   "description": "Backend application for connecting stock and users to mongodb",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "babel-node index.js",
     "dev": "babel-node ./initialise-dev/initDevDB.js && nodemon --exec npm start"
   },
   "author": "Maciej Marchel",
