@@ -14,7 +14,10 @@ const app = express();
 //const port = process.env.PORT || 8080;
 const port = process.env.PORT || 3000; 
 
-app.use(cors())
+app.use(cors({
+    origin: 'https://reactstock-web-app.onrender.com'
+}))
+
 app.use(express.json());
 app.use('/api/users', usersRouter);
 app.use('/api/products', productRouter);
