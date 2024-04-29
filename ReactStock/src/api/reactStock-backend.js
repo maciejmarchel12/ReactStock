@@ -13,7 +13,7 @@ const logActivity = async (action) => {
         }
 
         // Send activity log request
-        const response = await fetch('${BASE_URL}/api/activities/', {
+        const response = await fetch(`${BASE_URL}/api/activities/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ const getHeadersWithToken = () => {
 // Login API 
 export const login = async (username, password) => {
     try {
-        const response = await fetch('${BASE_URL}/api/users/login', {
+        const response = await fetch(`${BASE_URL}/api/users/login`, {
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -98,7 +98,7 @@ export const signup = async (username, password, permissionLevel) => {
         }
 
         // Makes the signup request with the bearer token in the headers
-        const response = await fetch('${BASE_URL}/api/users?action=register', {
+        const response = await fetch(`${BASE_URL}/api/users?action=register`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token // Includes the bearer token in the headers
@@ -173,7 +173,7 @@ export const getUserById = async (userId) => {
 // Get all Users
 export const fetchUsers = async () => {
     try {
-        const response = await fetch('${BASE_URL}/api/users', {
+        const response = await fetch(`${BASE_URL}/api/users`, {
             headers: getHeadersWithToken()
         });
         if (!response.ok) {
@@ -191,7 +191,7 @@ export const fetchUsers = async () => {
 // Create a new product
 export const createProduct = async (productData) => {
     try {
-        const response = await fetch('${BASE_URL}/api/products/', {
+        const response = await fetch(`${BASE_URL}/api/products/`, {
             headers: getHeadersWithToken(),
             method: 'post',
             body: JSON.stringify(productData)
@@ -208,7 +208,7 @@ export const createProduct = async (productData) => {
 // Get all products
 export const getAllProducts = async () => {
     try {
-        const response = await fetch('${BASE_URL}/api/products/', {
+        const response = await fetch(`${BASE_URL}/api/products/`, {
             headers: getHeadersWithToken()
         });
         const data = await response.json();
@@ -285,7 +285,7 @@ export const getProductByBarcode = async (barcode) => {
 // Barcode Scanning
 export const scanBarcode = async (barcode, isSubtractMode) => {
     try {
-        const response = await fetch('${BASE_URL}/api/products/scan', {
+        const response = await fetch(`${BASE_URL}/api/products/scan`, {
             headers: getHeadersWithToken(),
             method: 'post',
             body: JSON.stringify({ barcode, isSubtractMode })
@@ -317,7 +317,7 @@ export const updateProductByBarcode = async (barcode, updatedData) => {
 // Get all products for pie chart
 export const getAllProductsForPieChart = async () => {
     try {
-        const response = await fetch('${BASE_URL}/api/products/pie-chart');
+        const response = await fetch(`${BASE_URL}/api/products/pie-chart`);
         const data = await response.json();
         return data;
     } catch (error) {
@@ -331,7 +331,7 @@ export const getAllProductsForPieChart = async () => {
 // Get all activity logs
 export const getAllActivityLogs = async () => {
     try {
-        const response = await fetch('${BASE_URL}/api/activities/', {
+        const response = await fetch(`${BASE_URL}/api/activities/`, {
             headers: getHeadersWithToken()
         });
         if (!response.ok) {
