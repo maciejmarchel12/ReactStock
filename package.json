@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
     "quagga": "^0.12.1",
     "react-barcode-reader": "^0.0.2"
   }
