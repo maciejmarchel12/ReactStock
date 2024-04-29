@@ -1,5 +1,5 @@
 import React, {lazy, Suspense, useState, useContext } from 'react';
-import { createRoot } from "react-dom/client";
+import { createRoot } from "react-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools';
